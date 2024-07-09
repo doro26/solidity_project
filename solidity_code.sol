@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: MIT
-pragma solidity 0.8.26;
+pragma solidity ^0.8.26;
 
 /*
        REQUIREMENTS
@@ -16,29 +16,28 @@ pragma solidity 0.8.26;
 */
 
 contract MyToken {
+    // Public variables
+    string public tokenName = "Mikisa";
+    string public tokenAbbrv = "MKS";
+    uint256 public totalSupply = 90;
 
-    // public variables here
-       string public t_Name = "mikisa";
-       string public t_Abbry = "MKS";
-       int public total_Supply = 90;
+    // Mapping variable to store balances
+    mapping(address => uint256) public balances;
 
-    // mapping variable here
-       mapping(address => int) public balances;
+    // Mint function to increase total supply and balance of the given address
+    function mint(address account, uint256 amount) public {
+        require(account != address(0), "Mint to the zero address");
 
-    // mint function
-       function mint (address my_Add,int my_value) public {
-        total_Supply  +=  my_value;
-        balances[my_Add]  +=  my_value;
-       }
+        totalSupply += amount;
+        balances[account] += amount;
+    }
 
-    // burn function
-    
-        function burn (address my_Add,int my_value) public {
-            if (balances[my_Add] >= my_value){
-                 total_Supply  -=  my_value;
-                balances[my_Add]  -=  my_value;
-            }    
-        }
-    
-       
+    // Burn function to decrease total supply and balance of the given address
+    function burn(address account, uint256 amount) public {
+        require(account != address(0), "Burn from the zero address");
+        require(balances[account] >= amount, "Burn amount exceeds balance");
+
+        balances[account] -= amount;
+        totalSupply -= amount;
+    }
 }
